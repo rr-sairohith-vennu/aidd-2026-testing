@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIDD Summit 2026 — Testing Pipeline</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: #1a1a1a;
+      background: #fff;
+      display: flex;
+    }
+
+    nav {
+      width: 220px;
+      min-width: 220px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: #f7f7f8;
+      border-right: 1px solid #e2e2e6;
+      padding: 28px 0 40px;
+      font-size: 13px;
+    }
+
+    nav .nav-logo {
+      padding: 0 20px 18px;
+      font-weight: 700;
+      font-size: 13px;
+      color: #555;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e2e2e6;
+      margin-bottom: 14px;
+    }
+
+    nav .nav-group-label {
+      display: block;
+      padding: 10px 20px 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    nav a {
+      display: block;
+      padding: 5px 20px;
+      color: #444;
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    nav a:hover {
+      color: #1a7a3a;
+      background: #edf7f0;
+      border-left-color: #1a7a3a;
+    }
+
+    main {
+      flex: 1;
+      max-width: 780px;
+      padding: 48px 56px 80px;
+      min-width: 0;
+    }
+
+    h1 { font-size: 26px; font-weight: 800; color: #111; margin-bottom: 6px; }
+
+    .subtitle { color: #666; font-size: 14px; margin-bottom: 8px; }
+
+    .meta-row { display: flex; gap: 14px; margin: 14px 0 32px; flex-wrap: wrap; }
+
+    .meta-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; color: #555;
+      background: #f2f2f5; border: 1px solid #ddd;
+      border-radius: 20px; padding: 4px 12px;
+    }
+    .meta-chip.green { background: #edf7f0; border-color: #b9e4c7; color: #1a7a3a; }
+
+    hr.section-rule { border: none; border-top: 1px solid #e2e2e6; margin: 36px 0 24px; }
+
+    h2 { font-size: 19px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .section-subtitle { font-style: italic; color: #777; font-size: 13px; margin-bottom: 16px; }
+
+    h3 { font-size: 14px; font-weight: 700; color: #333; margin: 18px 0 6px; }
+
+    p { margin-bottom: 10px; }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12.5px; background: #f4f4f7;
+      border: 1px solid #e0e0e6; border-radius: 4px;
+      padding: 1px 5px; color: #1a7a3a;
+    }
+
+    blockquote {
+      margin: 10px 0 14px; padding: 10px 14px;
+      border-radius: 6px; border-left: 4px solid #3498db;
+      background: #eef6fd; font-size: 13px; line-height: 1.6;
+    }
+    blockquote strong:first-child { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #2980b9; }
+
+    .skill-header {
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(135deg, #1a7a3a 0%, #155a2b 100%);
+      color: #fff; border-radius: 10px; padding: 14px 20px; margin: 22px 0 14px;
+    }
+    .skill-header .skill-name { font-size: 16px; font-weight: 800; }
+    .skill-header .skill-name code {
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25);
+      color: #fff; font-size: 14px; padding: 2px 8px;
+    }
+    .skill-header .skill-badge {
+      font-size: 12px; font-weight: 600;
+      background: rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 12px;
+    }
+
+    .timeline {
+      display: flex; gap: 0; margin: 24px 0 32px;
+    }
+    .timeline-step { flex: 1; min-width: 60px; text-align: center; position: relative; }
+    .timeline-step::before {
+      content: ''; display: block; height: 3px; background: #b9e4c7;
+      position: absolute; top: 13px; left: 50%; right: -50%; z-index: 0;
+    }
+    .timeline-step:last-child::before { display: none; }
+    .timeline-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #1a7a3a; border: 3px solid #fff;
+      box-shadow: 0 0 0 2px #1a7a3a; margin: 0 auto 6px;
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: #fff;
+    }
+    .timeline-label { font-size: 10px; color: #1a7a3a; font-weight: 600; }
+    .timeline-time { font-size: 9px; color: #bbb; margin-top: 1px; }
+
+    .prompt-box {
+      background: #0d1117; border: 1px solid #30363d;
+      border-radius: 8px; margin: 8px 0 14px; overflow: hidden; position: relative;
+    }
+    .prompt-box-header {
+      background: #161b22; border-bottom: 1px solid #30363d;
+      padding: 6px 14px; display: flex; align-items: center; gap: 7px;
+    }
+    .prompt-box-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+    .prompt-box-header .prompt-label {
+      font-size: 11px; color: #8b949e; font-family: monospace; margin-left: 4px; flex: 1;
+    }
+    .copy-btn {
+      font-size: 11px; font-weight: 600; color: #8b949e;
+      background: #21262d; border: 1px solid #30363d;
+      border-radius: 5px; padding: 3px 10px; cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: -apple-system, sans-serif;
+    }
+    .copy-btn:hover { background: #1a7a3a; color: #fff; border-color: #1a7a3a; }
+    .copy-btn.copied { background: #1a7a3a; color: #fff; border-color: #1a7a3a; }
+    .prompt-box pre {
+      margin: 0; border-radius: 0; background: transparent;
+      padding: 14px 18px; color: #e6edf3;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 13px; line-height: 1.55;
+    }
+
+    ul { margin: 0 0 14px 20px; font-size: 13.5px; line-height: 2; }
+
+    table {
+      width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0 18px;
+    }
+    th {
+      text-align: left; background: #f4f4f7; border: 1px solid #e2e2e6;
+      padding: 8px 12px; font-weight: 700; color: #333;
+    }
+    td { border: 1px solid #e8e8ec; padding: 8px 12px; vertical-align: top; color: #444; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    @media (max-width: 700px) {
+      nav { display: none; }
+      main { padding: 28px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AIDD Summit 2026</div>
+  <span class="nav-group-label">Overview</span>
+  <a href="#intro">Introduction</a>
+  <a href="#pipeline">Pipeline</a>
+  <span class="nav-group-label">Testing Skills</span>
+  <a href="#build-tests">forge:build-tests</a>
+  <a href="#spec-ui-e2e">forge:spec-ui-e2e</a>
+  <a href="#build-playwright-tests">forge:build-playwright-tests</a>
+  <span class="nav-group-label">Reference</span>
+  <a href="#skills-table">Quick Reference</a>
+</nav>
+
+<main>
+
+  <h1>AIDD Summit 2026<br>Testing Pipeline</h1>
+  <p class="subtitle">Run these 3 skills after your implementation is complete.</p>
+  <div class="meta-row">
+    <span class="meta-chip green">&#9679; Post-Implementation</span>
+    <span class="meta-chip">3 Skills · Dishly Platform</span>
+    <span class="meta-chip">Forge v1.5+</span>
+  </div>
+
+  <!-- Intro -->
+  <hr class="section-rule" id="intro" />
+  <h2>Introduction</h2>
+  <p>The AIDD workshop ended at <code>forge:promote</code> — your plan is ready and your app is built. This guide covers the next three skills that test your implementation: backend tests, UI feature files, and Playwright specs running against your live app.</p>
+
+  <blockquote>
+    <strong>Note:</strong> Each skill checks its own prerequisites automatically. Just run them in order.
+  </blockquote>
+
+  <!-- Pipeline -->
+  <hr class="section-rule" id="pipeline" />
+  <h2>Pipeline</h2>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="timeline-dot">1</div>
+      <div class="timeline-label">build-tests</div>
+      <div class="timeline-time">backend</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-dot">2</div>
+      <div class="timeline-label">spec-ui-e2e</div>
+      <div class="timeline-time">feature files</div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-dot">3</div>
+      <div class="timeline-label">build-playwright</div>
+      <div class="timeline-time">UI specs + run</div>
+    </div>
+  </div>
+
+  <!-- forge:build-tests -->
+  <hr class="section-rule" id="build-tests" />
+  <div class="skill-header">
+    <div class="skill-name"><code>forge:build-tests</code></div>
+    <div class="skill-badge">Step 1 — Backend tests</div>
+  </div>
+  <p>Reads the BDD test suites from <code>forge:spec-tests</code> and writes executable test code that runs against your app.</p>
+
+  <h3>Prompt</h3>
+  <div class="prompt-box">
+    <div class="prompt-box-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="prompt-label">Claude Code</span>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    </div>
+    <pre>forge:build-tests
+
+Build the e2e tests for dishly-wave-1. Read the e2e test suite and
+generate executable test code that runs against the running app.</pre>
+  </div>
+
+  <h3>Output</h3>
+  <ul>
+    <li>Executable test files for e2e, contract, and integration suites</li>
+    <li>Pass/fail report confirming all scenarios run correctly</li>
+  </ul>
+
+  <!-- forge:spec-ui-e2e -->
+  <hr class="section-rule" id="spec-ui-e2e" />
+  <div class="skill-header">
+    <div class="skill-name"><code>forge:spec-ui-e2e</code></div>
+    <div class="skill-badge">Step 2 — Gherkin feature files</div>
+  </div>
+  <p>Converts <code>ui-e2e-test-suite.md</code> into Gherkin <code>.feature</code> files — one per UI surface — ready for Playwright.</p>
+
+  <h3>Prompt</h3>
+  <div class="prompt-box">
+    <div class="prompt-box-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="prompt-label">Claude Code</span>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    </div>
+    <pre>forge:spec-ui-e2e
+
+Generate feature files for dishly-wave-1. Convert the ui-e2e-test-suite
+into Gherkin .feature files, one per UI surface.</pre>
+  </div>
+
+  <h3>Output</h3>
+  <ul>
+    <li>Gherkin <code>.feature</code> files in <code>features/us/&lt;surface-name&gt;/</code></li>
+    <li>Each scenario tagged with <code>@SC-N</code> for traceability to requirements</li>
+  </ul>
+
+  <!-- forge:build-playwright-tests -->
+  <hr class="section-rule" id="build-playwright-tests" />
+  <div class="skill-header">
+    <div class="skill-name"><code>forge:build-playwright-tests</code></div>
+    <div class="skill-badge">Step 3 — UI specs + run</div>
+  </div>
+  <p>Takes the <code>.feature</code> files, navigates your live app via browser to discover real selectors, generates Playwright <code>.spec.ts</code> files, runs them, and auto-fixes any failures.</p>
+
+  <h3>Prompt</h3>
+  <div class="prompt-box">
+    <div class="prompt-box-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="prompt-label">Claude Code</span>
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    </div>
+    <pre>forge:build-playwright-tests
+
+Build Playwright tests for dishly. The feature files are ready — generate
+the spec files, run them against the local app, and fix any failures.</pre>
+  </div>
+
+  <h3>Output</h3>
+  <ul>
+    <li>Playwright <code>.spec.ts</code> files in <code>tests/bdd/us/&lt;feature-area&gt;/</code></li>
+    <li>Real CSS selectors discovered from the live DOM</li>
+    <li>Auto-fix loop — up to 3 cycles to resolve failing selectors</li>
+    <li>Validation report confirming all specs are correct</li>
+  </ul>
+
+  <!-- Quick Reference -->
+  <hr class="section-rule" id="skills-table" />
+  <h2>Quick Reference</h2>
+  <table>
+    <thead>
+      <tr><th>Skill</th><th>Input</th><th>Output</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>forge:build-tests</code></td>
+        <td>BDD suite files from <code>forge:spec-tests</code></td>
+        <td>Runnable backend test code</td>
+      </tr>
+      <tr>
+        <td><code>forge:spec-ui-e2e</code></td>
+        <td><code>ui-e2e-test-suite.md</code></td>
+        <td><code>features/us/&lt;surface&gt;/*.feature</code></td>
+      </tr>
+      <tr>
+        <td><code>forge:build-playwright-tests</code></td>
+        <td><code>.feature</code> files + running app</td>
+        <td><code>tests/bdd/us/&lt;area&gt;/*.spec.ts</code> + run results</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function copyPrompt(btn) {
+    const pre = btn.closest('.prompt-box').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
