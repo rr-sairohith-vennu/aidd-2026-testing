@@ -839,6 +839,9 @@
     <div class="skill-time">&#128336; ~5 minutes</div>
   </div>
 
+  <blockquote class="note">
+    <strong>Prerequisites:</strong> <code>forge:spec-tests</code> must have run first — this skill reads the BDD suite files it produces.
+  </blockquote>
   <p class="section-subtitle">Converts the BDD scenarios from <code>forge:spec-tests</code> into executable backend test code.</p>
 
   <p>Reads the contract, integration, and e2e suite files and writes actual runnable test code in your project's language (TypeScript for Dishly). The skill auto-detects language and framework, writes the tests, and confirms they pass.</p>
